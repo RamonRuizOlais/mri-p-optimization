@@ -29,7 +29,7 @@ def run_experiments(TR, SNR, num_vox):
         
     popt_data = np.zeros((num_vox,10))
     real_data = np.zeros((num_vox,10))
-    TE = np.array([0.007, 0.021, 0.035, 0.049, 0.063])      # TE values
+    TE = np.array([0.007, 0.014, 0.021, 0.028, 0.035, 0.042, 0.049, 0.056, 0.063, 0.070])     # TE values
 
     for i in range(num_vox):
 
