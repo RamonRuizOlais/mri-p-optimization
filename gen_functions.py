@@ -239,7 +239,7 @@ def error_promedio(real, fit):
         errors[i, 9] = np.abs(real[i][9] - fit[i][9]) / real[i][9]  # flip
         
     avg_errors = np.mean(errors, axis=1)  # Promedio de cada fila
-    avg_errors_columns = np.mean(errors[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], axis=0)  # Promedio de columnas 0, 1, y 2
+    avg_errors_columns = np.mean(errors[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], axis=0)  # Promedio de columnas (promedio de cada parámetro)
     
         
     return avg_errors_columns, avg_errors, errors
