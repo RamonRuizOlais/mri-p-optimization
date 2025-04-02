@@ -8,7 +8,7 @@ from gen_functions import *
 #%%---------------------------------------------------------------------------------------------
 # Objective function
 #-----------------------------------------------------------------------------------------------
-def run_experiments(TR, SNR, num_vox):
+def run_experiments(TR, SNR, num_vox, seed_exp):
     """
     Generation of a “num_vox” amount of synthetic data and fitting to it given a noise “SNR” and a vector “TR”.
 
@@ -18,7 +18,9 @@ def run_experiments(TR, SNR, num_vox):
         num_vox (int): Number of experiments to be performed
 
     Returns:
-        avg_error (np.arr): Array containing the average error of each individual parameter vector “TR”.
+        avg_param_errors (np.arr): Array containing the average error of each individual parameter.
+        avg_voxel_error (np.arr): Array containing the average error of each individual voxel.
+        individual_errors (np.arr): Array containing the individual error of each parameter for each experiment.
     """
     
         #             k1     k2     T1_mye  T2_mye  T1_IE   T2_IE   T1_CSF  T2_CSF  flip_angle
@@ -26,11 +28,13 @@ def run_experiments(TR, SNR, num_vox):
                     
     lower_bounds = [  0.00,  0.00,  0.130,  0.010,  1.800,  0.030,  3.950,  0.195,  150]        # Lower limit of the search range
     upper_bounds = [  1.00,  1.00,  0.200,  0.025,  2.500,  0.060,  4.050,  0.205,  180]        # Upper limit of the search range
-        
+    
+    
+    np.random.seed(seed_exp) 
     popt_data = np.zeros((num_vox,10))
     real_data = np.zeros((num_vox,10))
-    TE = np.array([0.007, 0.014, 0.021, 0.028, 0.035, 0.042, 0.049, 0.056, 0.063, 0.070])     # TE values
-
+    TE = np.array([0.007, 0.014, 0.021, 0.028, 0.035, 0.042, 0.049, 0.056, 0.063, 0.070])     # TE values 
+    
     for i in range(num_vox):
 
         mye_c = np.random.uniform(0.05, 0.3)
@@ -54,8 +58,8 @@ def run_experiments(TR, SNR, num_vox):
         popt_data[i,:] = popt
         real_data[i,:] = real
         
-    avg_error, _ = error_promedio(real_data, popt_data)
+    avg_param_errors, avg_vox_error, individual_errors = error_promedio(real_data, popt_data)
     
-    return avg_error
+    return avg_param_errors, avg_vox_error, individual_errors
 
 #%%
