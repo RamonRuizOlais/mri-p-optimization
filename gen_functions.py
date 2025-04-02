@@ -242,7 +242,7 @@ def error_promedio(real, fit):
     avg_errors_columns = np.mean(errors[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], axis=0)  # Promedio de columnas 0, 1, y 2
     
         
-    return avg_errors, avg_errors_columns
+    return avg_errors_columns, avg_errors, errors
 
 # Función para generar o ajustar los datos EPG
 def gen_epg_data(contributions_in, T1, T2, flip_angle, TR, TE, fit = False):
