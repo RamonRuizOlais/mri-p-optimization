@@ -23,17 +23,17 @@ def run_experiments(TR, SNR, num_vox, seed_exp):
         individual_errors (np.arr): Array containing the individual error of each parameter for each experiment.
     """
     
-        #             k1     k2     T1_mye  T2_mye  T1_IE   T2_IE   T1_CSF  T2_CSF  flip_angle
-    initial_params = [0.5,   0.5,   0.165,  0.015,  2.000,  0.045,  4.000,  0.200,  165]        # Initial values of the search range
+        #             k1     k2     T1_mye  T2_mye  T1_IE   T2_IE   flip_angle
+    initial_params = [0.5,   0.5,   0.165,  0.015,  2.000,  0.045,  165]        # Initial values of the search range
                     
-    lower_bounds = [  0.00,  0.00,  0.130,  0.010,  1.800,  0.030,  3.950,  0.195,  150]        # Lower limit of the search range
-    upper_bounds = [  1.00,  1.00,  0.200,  0.025,  2.500,  0.060,  4.050,  0.205,  180]        # Upper limit of the search range
+    lower_bounds = [  0.00,  0.00,  0.130,  0.010,  1.800,  0.030,  150]        # Lower limit of the search range
+    upper_bounds = [  1.00,  1.00,  0.200,  0.025,  2.500,  0.060,  180]        # Upper limit of the search range
     
     
     np.random.seed(seed_exp) 
     popt_data = np.zeros((num_vox,10))
     real_data = np.zeros((num_vox,10))
-    TE = np.array([0.007, 0.014, 0.021, 0.028, 0.035, 0.042, 0.049, 0.056, 0.063, 0.070])     # TE values 
+    TE = np.array([0.007, 0.014, 0.021, 0.028, 0.035, 0.042, 0.049, 0.056, 0.063, 0.070])     # TE values
     
     for i in range(num_vox):
 
@@ -44,8 +44,8 @@ def run_experiments(TR, SNR, num_vox, seed_exp):
         #                         Mielina    IE       CSF
         contributions = np.array([mye_c,     ie_c,    csf_c])     # Contributions (Alpha, Beta, Gamma)
 
-        T1 = np.array([[T1_myelin(lower_bounds, upper_bounds)], [T1_IE(lower_bounds, upper_bounds)], [T1_CSF(lower_bounds, upper_bounds)]])  # T1s
-        T2 = np.array([[T2_myelin(lower_bounds, upper_bounds)], [T2_IE(lower_bounds, upper_bounds)], [T2_CSF(lower_bounds, upper_bounds)]])  # T2s
+        T1 = np.array([[T1_myelin(lower_bounds, upper_bounds)], [T1_IE(lower_bounds, upper_bounds)], [4.0]])  # T1s
+        T2 = np.array([[T2_myelin(lower_bounds, upper_bounds)], [T2_IE(lower_bounds, upper_bounds)], [0.2]])  # T2s
 
 
         flip = np.random.uniform(150, 180)                      # Flip angle in degrees
@@ -63,3 +63,5 @@ def run_experiments(TR, SNR, num_vox, seed_exp):
     return avg_param_errors, avg_vox_error, individual_errors
 
 #%%
+
+
