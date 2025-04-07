@@ -224,7 +224,7 @@ def error_promedio(real, fit):
     n = len(fit)
     avg_errors = np.zeros(n)
     
-    errors = np.zeros((n, 10))  # Array para almacenar todos los errores
+    errors = np.zeros((n, 8))  # Array para almacenar todos los errores
 
     for i in range(n):
         errors[i, 0] = np.abs(real[i][0] - fit[i][0]) / real[i][0]  # alpha
@@ -234,12 +234,10 @@ def error_promedio(real, fit):
         errors[i, 4] = np.abs(real[i][4] - fit[i][4]) / real[i][4]  # t2_mye
         errors[i, 5] = np.abs(real[i][5] - fit[i][5]) / real[i][5]  # t1_ie
         errors[i, 6] = np.abs(real[i][6] - fit[i][6]) / real[i][6]  # t2_ie
-        errors[i, 7] = np.abs(real[i][7] - fit[i][7]) / real[i][7]  # t1_csf
-        errors[i, 8] = np.abs(real[i][8] - fit[i][8]) / real[i][8]  # t2_csf
-        errors[i, 9] = np.abs(real[i][9] - fit[i][9]) / real[i][9]  # flip
+        errors[i, 7] = np.abs(real[i][9] - fit[i][9]) / real[i][9]  # flip
         
     avg_errors = np.mean(errors, axis=1)  # Promedio de cada fila
-    avg_errors_columns = np.mean(errors[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], axis=0)  # Promedio de columnas (promedio de cada parámetro)
+    avg_errors_columns = np.mean(errors[:, [0, 1, 2, 3, 4, 5, 6, 7]], axis=0)  # Promedio de columnas 0, 1, y 2
     
         
     return avg_errors_columns, avg_errors, errors
@@ -282,22 +280,22 @@ def fit_params_epg(data, TR, TE, initial_params, lower_bounds, upper_bounds):
     data_flat = data.ravel()             # Aplanamos los datos para pasarlos a curve_fit
     
     # Ajuste de curva usando gen_epg_data como función objetivo
-    popt, pcov = curve_fit(lambda t, k1, k2, T1_1, T2_1, T1_2, T2_2, T1_3, T2_3, flip_angle: 
+    popt, pcov = curve_fit(lambda t, k1, k2, T1_1, T2_1, T1_2, T2_2, flip_angle: 
                     gen_epg_data([k1, k2], 
-                                 [[T1_1], [T1_2], [T1_3]], 
-                                 [[T2_1], [T2_2], [T2_3]], 
+                                 [[T1_1], [T1_2], [4.0]], 
+                                 [[T2_1], [T2_2], [0.2]], 
                                  flip_angle, TR, TE, fit = True).ravel(),
                     None, data_flat, p0=initial_params, maxfev=20000, bounds=(lower_bounds, upper_bounds))
 
-    k1_fit, k2_fit, T1_1_fit, T2_1_fit, T1_2_fit, T2_2_fit, T1_3_fit, T2_3_fit, flip_angle_fit = popt
+    k1_fit, k2_fit, T1_1_fit, T2_1_fit, T1_2_fit, T2_2_fit, flip_angle_fit = popt
     
     f1, f2, f3 = k_to_simplex(k1_fit, k2_fit)   # Calculamos las contribuciones con la función que toma los k de entrada
-    popt_out = [f1, f2, f3, T1_1_fit, T2_1_fit, T1_2_fit, T2_2_fit, T1_3_fit, T2_3_fit, flip_angle_fit] # Redefinimos los parámetros de salida cambiando los k por las contribuciones
+    popt_out = [f1, f2, f3, T1_1_fit, T2_1_fit, T1_2_fit, T2_2_fit, 4.0, 0.2, flip_angle_fit] # Redefinimos los parámetros de salida cambiando los k por las contribuciones
     
     # Generar los datos ajustados usando los parámetros óptimos
     fitted_data = gen_epg_data([k1_fit, k2_fit], 
-                               [[T1_1_fit], [T1_2_fit], [T1_3_fit]], 
-                               [[T2_1_fit], [T2_2_fit], [T2_3_fit]], 
+                               [[T1_1_fit], [T1_2_fit], [4.0]], 
+                               [[T2_1_fit], [T2_2_fit], [0.2]], 
                                flip_angle_fit, TR, TE, fit = True)
 
     fitted_data_flat = fitted_data.ravel()
@@ -306,3 +304,4 @@ def fit_params_epg(data, TR, TE, initial_params, lower_bounds, upper_bounds):
     mse = np.sum((data_flat - fitted_data_flat)**2) / len(data_flat)
 
     return popt_out, fitted_data, mse
+
