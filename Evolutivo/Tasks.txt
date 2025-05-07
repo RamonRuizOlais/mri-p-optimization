@@ -1,0 +1,2 @@
+srun /opt/anaconda_python311/bin/python3 /home/est_externo_dafne.aguilar/RM/Evolutivo/main.py 100 40
+
