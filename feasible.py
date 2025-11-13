@@ -3,7 +3,7 @@
 import convert_TR as ctr
 import random
 
-def ensure_feasible(x, vect_TR, convert=False, tr_lim=10_000):
+def ensure_feasible(x, vect_TR, convert=False, tr_lim=50_000):
     x_copy = x[:]
     sum_tr_copy = sum(vect_TR[i] for i, val in enumerate(x_copy) if val == 1)
     
