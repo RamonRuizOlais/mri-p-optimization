@@ -1,0 +1,1 @@
+/opt/anaconda_python311/bin/python3 /home/est_externo_dafne.aguilar/RM/mide_tiempo.py
