@@ -4,42 +4,39 @@
 #              identificarlo fácilmente, el número de núcleos máximo por nodo,
 #              el número de procesos a utilizar, y la ruta donde está la lista de tareas.
 
-# grupo en el que se va a ejecutar
+# 1. Grupo en el que se va a ejecutar
 #SBATCH --partition=C1Mitad1
 
-# Nombre del trabajo. Puede cambiarlo 
+# 2. Nombre del trabajo. Puede cambiarlo 
 # para identificarlo de forma más sencilla
-#SBATCH --job-name=my_job_as_prueba 
+#SBATCH --job-name="mri_optimization"
 
-#Numero máximo de tareas asignadas por nodo. 
-#Valor recomendado: 12 para C1, 24 para C2, 24 para GPU.
+# 3. Numero máximo de tareas asignadas por nodo. 
 #SBATCH --ntasks-per-node=5
 
-#Numero de procesos a ejecutar de forma simultanea (en total
-#teniendo en cuenta a todos los nodos). En este ejemplo
-#se usarían 2 nodos tipo C2, y en cada uno de los nodos se usarían
-#24 procesos, para el total de 48.
+# 4. Numero de procesos a ejecutar de forma simultanea (en total
+# teniendo en cuenta a todos los nodos). En este ejemplo
+# se usarían 6 nodos tipo C1Mitad1, y en cada uno de los nodos se usarían
+# 5 procesos, para el total de 30.
 #SBATCH --ntasks=30
 
-# archivo de log donde quedará lo que imprima su software por pantalla. 
+# 5. Archivo de log donde quedará lo que imprima su software por pantalla. 
 #Lo recomendable es que el programa no imprima nada a pantalla, sino a fichero directamente
+#SBATCH --output=/home/usurio/mri-p-optimization/results_tiempos.log
+#SBATCH --error=/home/usurio/mri-p-optimizationM/error_tiempos.log
 
-#SBATCH --output=/home/est_externo_dafne.aguilar/RM/results_tiempos.log
-#SBATCH --error=/home/est_externo_dafne.aguilar/RM/error_tiempos.log
-
-#mem especifica la cantidad máxima de memoria que podrá utilizar en cada nodo. 
-#El valor 0 indica que podrá utilizar toda la memoria.
+# 6. mem especifica la cantidad máxima de memoria que podrá utilizar en cada nodo. 
+# El valor 0 indica que podrá utilizar toda la memoria.
 #SBATCH --mem=0  
 
-#Si el proceso tarda más del tiempo especificado en time automaticamente se terminará, 
-#lo que permitirá evitar que un proceso en el que hubo algún tipo de
-#error, como un bucle infinito, se quede ejecutando por mucho tiempo.
+# 7. Si el proceso tarda más del tiempo especificado en time automaticamente se terminará, 
+#lo que permitirá evitar que un proceso en el que hubo algún tipo de eror.
 #El valor 0 indica que no se mata al proceso nunca, con lo que en caso
 #de errores de ese tipo lo deberá terminar manualmente (con scancel)
 #SBATCH --time=0 
 
-# En la línea siguiente cambie la ruta del fichero de tareas
-Tasks=/home/est_externo_dafne.aguilar/RM/Tasks_tiempos.txt
+# 8. En la línea siguiente cambie la ruta del fichero de tareas
+Tasks=/home/usurio/mri-p-optimization/Tasks_tiempos.txt
 mpirun.openmpi -np ${SLURM_NTASKS} /opt/ClusterTools/MPI_Scheduler $Tasks  1 
 
 # Para enviarlo en la bash escriba sbatch nombreDeEsteFichero 
