@@ -23,7 +23,6 @@
 
 # 5. Archivo de log donde quedará lo que imprima su software por pantalla. 
 #Lo recomendable es que el programa no imprima nada a pantalla, sino a fichero directamente
-
 #SBATCH --output=/home/usurio/mri-p-optimization/results2.log
 #SBATCH --error=/home/usurio/mri-p-optimization/error2.log
 
