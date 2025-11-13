@@ -16,14 +16,17 @@ import comparison as cp
 import selection as select
 import crossover_two_points as ct
 
+import Th
+import BNP
 
 
-class RMPoblacional:
+class RMPoblacional_BNP:
 
     def __init__(self, soluciones):
-        self.soluciones = soluciones
 
-    def rm_poblacional(self, n, vect_TR, SNR, num_vox, seed, M=100):
+        self.soluciones = soluciones
+        
+    def rm_poblacional_bnp(self, n, vect_TR, SNR, num_vox, seed, M=100):
         random.seed(seed)
 
         # Genera población inicial y asegura factibilidad
@@ -33,11 +36,16 @@ class RMPoblacional:
         # Búsqueda local en la población inicial
         pop = ls.ejecutar_busqueda_local(pop_feasible, n, SNR, num_vox, vect_TR)
 
-        # Inicializar almacenamiento
+        # Almacenar valores iniciales
         POP = [pop]
         best = bp.best_individual(pop)
         history = [best[2]]
         F_history = [[f for x, t, f in pop]]
+
+        # Diversidad inicial
+        matrix = dis.distance_matrix(pop, vect_TR)
+        D_0 = np.nanmean(matrix)
+        th = D_0
 
         for m in range(M):
             start_indv = time.time()
@@ -46,34 +54,27 @@ class RMPoblacional:
             sons = ct.crossover_two_points(parents, vect_TR, SNR, num_vox)
             sons_ls = ls.ejecutar_busqueda_local(sons, n, SNR, num_vox, vect_TR)
 
-            next_generation = sons_ls[:]
-            the_best_father = bp.best_individual(pop)
-            the_best_son = bp.best_individual(sons_ls)
+            th = Th.Th(m, M, D_0)
+            eligible_pop = sons_ls[:] + pop[:]
+            pop = BNP.BNP(eligible_pop, th, vect_TR, self.soluciones)
 
-            best_current = cp.comparison(the_best_father[0], the_best_father[1], the_best_father[2],
-                                         the_best_son[0], the_best_son[1], the_best_son[2])
-
-            if best_current == the_best_father:
-                next_generation.append(the_best_father)
-
-            pop = next_generation
-            best = cp.comparison(best[0], best[1], best[2],
-                                 best_current[0], best_current[1], best_current[2])
+            best_current = bp.best_individual(pop)
+            best = cp.comparison(best[0], best[1], best[2], best_current[0], best_current[1], best_current[2])
 
             tiempo_indv = time.time() - start_indv
-            print(f"Tiempo de ejecución corrida {m}: {tiempo_indv} segundos")
+            print(f"Tiempo de ejecución corrida BNP {m}: {tiempo_indv} segundos")
 
             POP.append(pop)
             history.append(best[2])
             F_history.append([f for x, t, f in pop])
 
-            # Guardar respaldo cada 10 iteraciones
+            # Guardar en .pkl cada 10 iteraciones
             if m % 20 == 0:
-                with open(f"POP_iter{m}_seed{seed}.pkl", "wb") as f:
+                with open(f"POP_BNP_iter{m}_seed{seed}.pkl", "wb") as f:
                     pickle.dump(POP, f)
 
         # Guardar versión final al terminar
-        with open(f"POP_final_{seed}.pkl", "wb") as f:
+        with open(f"POP_BNP_final_{seed}.pkl", "wb") as f:
             pickle.dump(POP, f)
 
         '''

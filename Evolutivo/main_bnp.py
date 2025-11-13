@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-from poblacional import RMPoblacional
+from poblacional_BNP import RMPoblacional_BNP
 
 def main(SNR, num_vox, seed):
     # Parámetros fijos
@@ -9,14 +9,14 @@ def main(SNR, num_vox, seed):
     M = 100
     vect_TR = [x for x in range(100, 200 * n, 200)]  # TRs simulados
 
-    print("Inicia ejecución del algoritmo sin BNP")
+    print("Inicia ejecución del algoritmo con BNP")
 
-    rm_pop = RMPoblacional(soluciones)
-    POP, best, history, F_history = rm_pop.rm_poblacional(n, vect_TR, SNR, num_vox, seed, M)
+    rm_bnp = RMPoblacional_BNP(soluciones)
+    POP_bnp, best_bnp, history_bnp, F_history_bnp = rm_bnp.rm_poblacional_bnp(n, vect_TR, SNR, num_vox, seed, M)
 
-    print("Termina ejecución del algoritmo sin BNP")
+    print("Termina ejecución del algoritmo con BNP")
     print()
-    print(best)
+    print(best_bnp)
 
 if __name__ == "__main__":
     SNR = int(sys.argv[1])      # Ejemplo: 100

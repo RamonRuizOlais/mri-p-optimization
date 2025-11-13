@@ -36,7 +36,7 @@ def calculate_distance(args):
     
 
 # Obtener distancia de x1 a x2 y de x2 a x1
-def distancia_promedio(x1, x2, vector_TR, max_workers=None):
+def distancia_promedio(x1, x2, vector_TR, max_workers=20):
     n = len(vector_TR)
     indices_1 = [i for i in range(n) if x1[i] == 1]
     indices_2 = [i for i in range(n) if x2[i] == 1]
@@ -63,7 +63,7 @@ def distance_matrix(pop, vect_TR):
     for i1, i2 in itertools.combinations(range(individuals), 2):
         individual_1 = pop[i1][0]  # Lista de TRs seleccionados del individuo i1
         individual_2 = pop[i2][0]  # Lista de TRs seleccionados del individuo i2
-        distancia = distancia_promedio(individual_1, individual_2, vect_TR, max_workers=os.cpu_count())
+        distancia = distancia_promedio(individual_1, individual_2, vect_TR, max_workers=20)
         matrix[i1][i2] = distancia
         matrix[i2][i1] = distancia
 
