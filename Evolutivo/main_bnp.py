@@ -7,7 +7,8 @@ def main(SNR, num_vox, seed):
     n = 100
     soluciones = 30
     M = 100
-    vect_TR = [x for x in range(100, 200 * n, 200)]  # TRs simulados
+    with open('TR.txt', 'r') as f:
+        vect_TR = [int(x) for x in f.read().split()]
 
     print("Inicia ejecución del algoritmo con BNP")
 
