@@ -33,7 +33,8 @@ def run_experiments(TR, SNR, num_vox, seed_exp):
     np.random.seed(seed_exp) 
     popt_data = np.zeros((num_vox,10))
     real_data = np.zeros((num_vox,10))
-    TE = np.array([0.007, 0.014, 0.021, 0.028, 0.035, 0.042, 0.049, 0.056, 0.063, 0.070])     # TE values
+    with open('TE.txt', 'r') as f:
+        TE = np.array([float(x) for x in f.read().split()])
     
     for i in range(num_vox):
 
