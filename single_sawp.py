@@ -10,8 +10,9 @@ import random_solution as rs
 def single_sawp(n, seed, SNR, num_vox):
     random.seed(seed)
 
-    # Solución inicial
-    vect_TR = [x for x in range(100, 200 * n, 200)]
+    with open('TR.txt', 'r') as f:
+        vect_TR = [int(x) for x in f.read().split()]
+        
     x = rs.random_solution(n, vect_TR)
     x, TR = feas.ensure_feasible(x, vect_TR, convert=True)
     
