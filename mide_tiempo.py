@@ -11,8 +11,10 @@ import random_solution as rs
 
 n = 100
 random.seed(1)
-# Solución inicial
-vect_TR = [x for x in range(100, 200 * n, 200)]
+
+with open('TR.txt', 'r') as f:
+        vect_TR = [int(x) for x in f.read().split()]
+    
 tiempos = []
 
 pop_prueba = [rs.random_solution(n, vect_TR) for _ in range(30)]
