@@ -1,7 +1,7 @@
 # Optimization of Multi-modal Relaxometry MR Acquisitions for Estimating Quantitative Brain Microstructure Parameters
 
 Authors:
-- Ashley Aguilar-Salinas¹ (ashaguilar06@gmail.com)
+- Ashley Aguilar-Salinas¹ (ashleyd.aguilars@inaoe.mx)
 - Alonso Ramírez-Manzanares² (alram@cimat.mx)
 - Ramon Ruiz-Olais² (ramon.ruiz@cimat.mx)
 - Carlos Segura² (carlos.segura@cimat.mx)
