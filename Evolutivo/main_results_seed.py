@@ -21,7 +21,8 @@ def main():
     # Parámetros
     n = 100
     max_workers = 20
-    vect_TR = [x for x in range(100, 200 * n, 200)]
+    with open('TR.txt', 'r') as f:
+        vect_TR = [int(x) for x in f.read().split()]
 
     # Cargar las poblaciones
     for w in range(10):
