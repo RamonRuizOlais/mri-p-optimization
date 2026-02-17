@@ -321,17 +321,17 @@ Edit the following values in main scripts:
 # MRI parameters
 SNR = 100                      # Signal-to-noise ratio
 NUM_VOXELS = 40               # Voxels for evaluation
-MAX_ACQUISITION_TIME = 5000   # ms (maximum allowed)
+MAX_ACQUISITION_TIME = 50000   # ms (maximum allowed)
 
 # Optimization parameters
 POPULATION_SIZE = 30           # Individuals
 NUM_GENERATIONS = 100          # Generations
-EPSILON = 0.01                 # Improvement threshold for local search
+EPSILON = 0.02                 # Improvement threshold for local search
 
 # TR (Repetition Time) range
 TR_MIN = 100                   # ms
-TR_MAX = 3000                  # ms
-TR_STEP = 100                  # ms
+TR_MAX = 19900                  # ms
+TR_STEP = 200                  # ms
 ```
 
 ---
